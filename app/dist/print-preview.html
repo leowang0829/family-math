@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>爱数学 · 错题打印预览</title>
+  <link rel="stylesheet" href="/assets/katex/katex.min.css">
+  <link rel="stylesheet" href="/print-preview.css">
+  <script defer src="/assets/katex/katex.min.js"></script>
+  <script defer src="/assets/katex/contrib/auto-render.min.js"></script>
+  <script defer src="/print-preview.js"></script>
+</head>
+<body>
+  <header class="print-toolbar">
+    <div><a href="/?view=library" class="back-link">← 返回选题</a><h1>错题打印预览</h1><p id="summary">正在准备干净的题目…</p></div>
+    <div class="print-actions">
+      <label>字号 <select id="font-size"><option value="14">标准 · 14 磅</option><option value="16">大字 · 16 磅</option></select></label>
+      <label>作答留白 <select id="answer-space"><option value="1">标准</option><option value="1.4">更多</option></select></label>
+      <button id="print-button" disabled>打印 / 存为 PDF</button>
+    </div>
+  </header>
+  <main>
+    <section id="message" role="status" aria-live="polite">正在清除手写答案、演算及批改痕迹，恢复题目与必要图形。首次生成需要一些时间。</section>
+    <section id="issues" aria-label="需要核对的题目"></section>
+    <div id="pages" class="pages" aria-label="A4 打印预览"></div>
+  </main>
+  <p class="screen-note">预览仅包含题目，不含答案。纸张为 A4 纵向；打印时请选择 A4 和原始大小。iPad 可在系统打印窗口选择 AirPrint 打印机。</p>
+</body>
+</html>

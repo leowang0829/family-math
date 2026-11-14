@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 300" fill="none">
+  <ellipse cx="220" cy="270" rx="164" ry="18" fill="#e9dbc6"/>
+  <path d="M56 268c62-35 262-41 323 0" stroke="#93ad81" stroke-width="3" stroke-linecap="round"/>
+  <path d="M143 133h142l17 114c-42 24-122 24-172 0Z" fill="#fffdf4" stroke="#e9d8be" stroke-width="2"/>
+  <path d="M202 261v-47a22 22 0 0 1 44 0v47" fill="#588267"/>
+  <circle cx="235" cy="232" r="3" fill="#f3cc7c"/>
+  <rect x="154" y="176" width="31" height="31" rx="12" fill="#f2c875" stroke="#c97d50" stroke-width="3"/>
+  <path d="M170 178v27m-14-14h27" stroke="#fffdf4" stroke-width="3"/>
+  <path d="M93 139C98 59 153 27 214 27s118 32 124 112c-63 34-181 34-245 0Z" fill="#bf3d3c"/>
+  <path d="M104 130c12-68 58-95 110-95 53 0 102 27 113 95-67 23-157 23-223 0Z" fill="#df5b50"/>
+  <ellipse cx="145" cy="101" rx="23" ry="16" transform="rotate(-30 145 101)" fill="#fff6e9"/>
+  <ellipse cx="221" cy="58" rx="25" ry="13" fill="#fff6e9"/>
+  <ellipse cx="278" cy="111" rx="25" ry="17" transform="rotate(25 278 111)" fill="#fff6e9"/>
+  <path d="M129 72c15-15 31-22 44-25" stroke="#f4917e" stroke-width="5" stroke-linecap="round"/>
+  <path d="M64 239h29l4 28c-11 6-26 6-38 0Z" fill="#fffdf4" stroke="#e9d8be" stroke-width="2"/>
+  <path d="M43 239c1-29 18-47 35-47 18 0 37 18 38 47-21 9-53 9-73 0Z" fill="#bf3d3c"/>
+  <ellipse cx="63" cy="221" rx="7" ry="6" fill="#fff6e9"/><ellipse cx="90" cy="210" rx="7" ry="5" fill="#fff6e9"/>
+  <path d="M333 246h19l3 21c-7 4-17 4-25 0Z" fill="#fffdf4"/>
+  <path d="M317 245c1-23 13-37 26-37 14 0 28 14 29 37-16 7-40 7-55 0Z" fill="#d85349"/>
+  <circle cx="333" cy="229" r="5" fill="#fff6e9"/><circle cx="353" cy="237" r="5" fill="#fff6e9"/>
+  <path d="M107 271v-43m0 21c-14-1-18-9-19-16 13 1 18 8 19 16Zm0 10c13-2 18-11 18-18-12 2-18 10-18 18Zm200 9v-34m0 15c-12-2-16-10-16-16 11 1 16 10 16 16Zm0 11c12-2 17-9 18-16-12 1-17 8-18 16Z" fill="#63856b"/>
+  <rect x="297" y="72" width="72" height="49" rx="12" transform="rotate(9 297 72)" fill="#fffdf4" stroke="#e9d8be" stroke-width="2"/>
+  <text x="312" y="105" transform="rotate(9 312 105)" font-family="Georgia,serif" font-size="22" fill="#477257">½ + ¼</text>
+  <path d="M72 95v18m-9-9h18m283 69v16m-8-8h16" stroke="#c38354" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="116" cy="35" r="4" fill="#d17c62"/><circle cx="375" cy="133" r="3" fill="#d17c62"/>
+</svg>

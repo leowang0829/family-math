@@ -1,0 +1,11 @@
+/* Pure, shared answer-card rendering. All expected parts are required. */
+(function(root,factory){const api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.MathAnswerFields=api;})(typeof window==='object'?window:globalThis,function(){
+  'use strict';
+  const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function count(text){text=String(text||'').normalize('NFKC');const labels=new Set([...text.matchAll(/\(([1-9][0-9]?)\)/g)].map(m=>m[1]));for(const m of text.matchAll(/(?:^|\n)\s*([1-9][0-9]?)[.、]/g))labels.add(m[1]);const blanks=[...text.matchAll(/_{2,}|\(\s*\)|□/g)].length,questions=(text.match(/\?/g)||[]).length,pair=(text.includes('最快')&&text.includes('最慢'))||(text.includes('商')&&text.includes('余数'))||['周长和面积','周长与面积','面积和周长','分子和分母分别','长和宽分别'].some(x=>text.includes(x))?2:1;return Math.max(1,labels.size,blanks,questions>1?questions:1,pair);}
+  function missing(card,answers){return card.parts.filter(p=>!String(answers[p.id]??'').trim()).map(p=>p.id);}
+  function fields(card,answers={},feedback=null,key=''){
+    return `<div class="answer-card-fields">${card.parts.map((p,i)=>{const result=feedback?.results?.find(r=>r.id===p.id),status=result?.correct===true?'correct':result?.correct===false?'error':'pending',id='card-'+card.id.slice(0,12)+'-'+p.id,attributes=`id="${id}" data-card-key="${esc(key)}" data-card-part="${esc(p.id)}" aria-label="${esc(p.label)}" autocomplete="off" ${result?.correct===false?'aria-invalid="true"':''}`;return `<div class="answer-card-part"><label class="label" for="${id}">${esc(p.label||`第${i+1}问`)}</label><div class="answer-card-input">${p.kind==='explanation'?`<textarea ${attributes} rows="3" placeholder="写下你的理由或计算过程">${esc(answers[p.id]||'')}</textarea>`:`<input ${attributes} inputmode="text" placeholder="${p.kind==='number'?'可填数字、分数或百分数':'填写这一问的答案'}" value="${esc(answers[p.id]||'')}">`}${p.unit?`<span>${esc(p.unit)}</span>`:''}</div>${result?`<p class="part-feedback ${status}" role="status">${result.correct===true?'✓ ':result.correct===false?'再想一想 · ':'待确认 · '}${esc(result.feedback)}</p>`:''}</div>`;}).join('')}</div>`;
+  }
+  return Object.freeze({count,missing,fields});
+});
