@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+const {createModel,createStore}=require('../dist/scratchpad.js');
+const storage={data:new Map(),getItem(k){return this.data.get(k)},setItem(k,v){this.data.set(k,v)}};
+const math=createStore(storage,'math'),alternate=createStore(storage,'alternate');
+const key=math.key('lesson','1.1',0,'35+46=?'),other=math.key('lesson','1.1',1,'35+46=?');
+const pen={tool:'pen',points:[[.1,.1],[.2,.3]]},eraser={tool:'eraser',points:[[.1,.1],[.2,.2]]};
+let m=createModel();m.add(pen);m.add(eraser);m.undo();assert.deepEqual(m.strokes,[pen]);m.clear();assert.equal(m.strokes.length,0);m.undo();assert.deepEqual(m.strokes,[pen]);
+assert(math.write(key,m.strokes));assert.deepEqual(createModel(math.read(key)).strokes,[pen]);assert.deepEqual(math.read(other),[]);assert.deepEqual(alternate.read(key),[]);assert.notEqual(key,math.key('lesson','1.1',0,'35+47=?'));
+assert.equal(createStore(null,'x').write('a',[]),false);assert.deepEqual(createStore(null,'x').read('a'),[]);
+assert.equal(createModel([{tool:'pen',points:[[NaN,1],[-1,0],[.5,.5]]}]).strokes[0].points.length,1);assert.deepEqual(createModel({}).strokes,[]);
+assert(math.write(key,[]));assert.deepEqual(math.read(key),[]);console.log('PASS: per-child/per-question restore, undo/clear, eraser, invalid data, storage failure');

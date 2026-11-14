@@ -1,0 +1,15 @@
+services:
+  math:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8921:8921"
+    environment:
+      DASHSCOPE_API_KEY: ${DASHSCOPE_API_KEY:-}
+      DASHSCOPE_WORKSPACE: ${DASHSCOPE_WORKSPACE:-}
+      MATH_PUBLIC_ORIGIN: ${MATH_PUBLIC_ORIGIN:-}
+      MATH_FAMILY_PASSWORD: ${MATH_FAMILY_PASSWORD:-}
+    volumes:
+      - math-data:/data
+volumes:
+  math-data:

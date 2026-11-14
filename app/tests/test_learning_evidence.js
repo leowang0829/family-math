@@ -1,0 +1,18 @@
+const assert=require('node:assert/strict');
+const evaluate=require('../dist/learning-evidence.js');
+const attempt=(practice,date,correct=true,assisted=false,sequence=1)=>({id:String(Date.parse(date)+sequence)+'-test',practice,date,correct,assisted});
+const first=[0,1,2].map(i=>attempt(i,'2026-10-14'));
+assert.equal(evaluate(first,3).mastered,false,'one day is not enough');
+assert.equal(evaluate([...first,...first],3).mastered,false,'same-day repeats do not establish mastery');
+const twice=[...first,...[0,1,2].map(i=>attempt(i,'2026-10-15'))];
+assert.equal(evaluate(twice,3).mastered,true,'each exercise needs independent answers on two dates');
+assert.equal(evaluate([...first,...[0,1,2].map(i=>attempt(i,'2026-10-15',true,true))],3).mastered,false,'assisted answers do not count');
+assert.equal(evaluate([...twice,attempt(1,'2026-10-16',false,false)],3).mastered,false,'a later error reopens consolidation');
+assert.equal(evaluate([...twice,attempt(1,'2026-10-16',false,false)].reverse(),3).mastered,false,'sync ordering cannot hide a later error');
+assert.equal(evaluate(twice.filter(a=>a.practice!==2),3).mastered,false,'missing evidence for one exercise remains visible');
+const lessons=[{id:'1.1',chapter:'1'},{id:'1.2',chapter:'1'},{id:'1.3',chapter:'1'}];
+const pending=()=>({started:false,due:false,mastered:false});
+assert.equal(evaluate.recommend(lessons,'1','',pending,id=>id==='1.1').id,'1.2','after completing basic practice, continue to the next lesson');
+assert.equal(evaluate.recommend(lessons,'1','1.3',pending,()=>false).id,'1.3','school focus takes precedence');
+assert.equal(evaluate.recommend(lessons,'1','1.3',id=>({started:id==='1.1',due:id==='1.1',mastered:false}),()=>false).id,'1.1','due review takes precedence over new lessons');
+console.log('10 learning-evidence and recommendation checks passed.');

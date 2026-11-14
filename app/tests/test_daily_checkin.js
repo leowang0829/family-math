@@ -1,0 +1,20 @@
+const assert=require('node:assert/strict'),checkin=require('../dist/daily-checkin.js');
+const day='2026-11-10',original=(date,id='q1',correct=true)=>({id:Date.parse(date+'T12:00:00+08:00')+'-'+id,questionId:'original-'+id,date,correct}),run=(attempts=[],records={})=>checkin.evaluate({attempts,records,day});
+assert.deepEqual([run().checked,run().total,run().streak],[false,0,0]);
+const one=run([original(day)]);assert(one.checked);assert.equal(one.total,1);assert.equal(run([original(day),original(day,'q2')]).total,1);
+assert(!run([original(day,'q1',false)]).checked);assert(!run([{...original(day),correct:null}]).checked);
+assert(!checkin.evaluate({attempts:[original(day,'example')],records:{},day,exampleIds:['example']}).checked);
+const five=Array.from({length:5},(_,i)=>({id:String(i),variantId:'v'+i,questionId:'bank-1.1',date:day,dailyReviewDate:day,correct:i!==0})),plan={'daily-review-2026-11-10':{items:five.map(q=>({variantId:q.variantId}))}};
+assert(run(five,plan).checked,'completing all five counts, including a submitted wrong answer');assert(!run(five.slice(0,4),plan).checked);assert(!run([...five.slice(0,4),five[0]],plan).checked,'repeating one question cannot replace the fifth');
+assert(!run(five,{'daily-review-2026-11-10':{items:[{variantId:'other'}]}}).checked,'malformed daily plan cannot be silently certified');
+const past=Array.from({length:6},(_,i)=>original(checkin.shift(day,-i-1),'past'+i));assert.equal(run(past).streak,6,'yesterday streak stays visible before today is completed');
+const seven=run([...past,original(day)]);assert.equal(seven.total,7);assert.equal(seven.streak,7);assert(seven.badges[1].earned);assert.equal(seven.next,14);
+assert.equal(run([original(checkin.shift(day,-3))]).streak,0);assert.equal(run([original('2026-11-11')]).total,0);assert.equal(run([original('2026-02-30')]).total,0);
+const fix=[{id:'1-a',questionId:'lesson-1.1',practice:0,date:'2026-11-09',correct:false},{id:'2-a',questionId:'lesson-1.1',practice:0,date:day,correct:true}];assert(run(fix).checked);assert(!run([fix[1]]).checked,'a fresh correct textbook question is not an original correction');
+const bank=[{id:'1-a',questionId:'bank-1.1',variantId:'v',date:'2026-11-09',correct:false},{id:'2-a',questionId:'bank-1.1',variantId:'v',date:day,correct:true}];assert(run(bank).checked);
+const input={attempts:[original(day)],records:{keep:{status:'mastered'}},day,now:123},before=JSON.stringify(input),award=checkin.award(input);assert(award.record);assert.equal(JSON.stringify(input),before,'evaluation never mutates existing records');
+const records={...input.records,[checkin.key(day)]:award.record};assert.equal(checkin.award({...input,records}).record,null);assert(run([],records).checked,'persisted day is retained even if old attempts are exported later');
+assert.equal(checkin.shift('2028-03-01',-1),'2028-02-29');
+const thirty=run(Array.from({length:30},(_,i)=>original(checkin.shift(day,-i),'q'+i)));assert(thirty.badges.every(b=>b.earned));assert.equal(thirty.next,null);assert.equal(thirty.streak,30);
+for(const profile of ['math','alternate']){const html=checkin.html(seven,profile);assert(html.includes('今日已打卡'));assert(html.includes('累计成长'));assert(html.includes('连续打卡'));assert(!html.includes('data-action="checkin"'),'no manual check-in is required');}
+console.log('Check-in: fixed daily five, whole original correction, history retention, Singapore dates, streaks, milestones, duplicate protection and pure evaluation passed.');
